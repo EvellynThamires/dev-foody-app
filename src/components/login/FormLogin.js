@@ -14,7 +14,7 @@ export default () => {
         event.preventDefault()
         firebase.auth().signInWithEmailAndPassword(email, password) 
             .then((response) => {
-                console.log(response)
+                console.log(response, 'Usuário logado')
             })
             .catch((error) => {
                 console.log(error)
