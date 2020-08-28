@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import img from '../../img/ops.jpeg'
+import img from '../../img/Background.jpg'
 
 const BackgroundLogin = styled.div `
     background-image:url("${img}");
@@ -8,8 +8,6 @@ const BackgroundLogin = styled.div `
     min-height:100vh; 
     padding-top: 5vh;
 `
-
-
 export default ({ children }) => (
     <BackgroundLogin> 
         { children }
