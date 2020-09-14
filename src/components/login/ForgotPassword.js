@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import firebase from '../../plugins/firebase'
 import { Modal, Button, Form } from 'react-bootstrap'
+import growl from 'growl-alert'
+import 'growl-alert/dist/growl-alert.css'
 
 export default () => {
     const [show, setShow] = useState(false);
@@ -13,10 +15,10 @@ export default () => {
         firebase.auth().useDeviceLanguage()
         firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
-                console.log('Email enviado')
+                growl({ text: 'Email enviado', type: 'success', fadeAway: true, fadeAwayTimeout: 2000 });
             })
-            .catch((error) => {
-                console.log(error)
+            .catch(() => {
+                growl({ text: 'Email incorreto', type: 'error', fadeAway: true, fadeAwayTimeout: 2000 });
             })
     }
 

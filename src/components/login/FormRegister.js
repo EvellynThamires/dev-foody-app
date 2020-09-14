@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import firebase from '../../plugins/firebase'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import growl from 'growl-alert'
+import 'growl-alert/dist/growl-alert.css'
 
 export default () => {
 
@@ -9,24 +12,32 @@ export default () => {
     const [password, setPassword] = useState('')
     const [post, setPost] = useState('')
 
+    const history = useHistory()
+
     const register = (event) => {
-        event.preventDefault()
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                const userCollection = firebase.firestore().collection('users')
-                    firebase.auth().onAuthStateChanged((user) => {
-                        userCollection
-                            .doc(user.uid)
-                            .set({
-                                name, 
-                                post,
-                            })
-                    })
-                    console.log('Criado')
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        if(!name || !email || !password || !post) {
+            event.preventDefault()
+            growl({ text: 'Preencha todos os campos!', type: 'warning', fadeAway: true, fadeAwayTimeout: 2000 });
+        } else {
+            event.preventDefault()
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    const userCollection = firebase.firestore().collection('users')
+                        firebase.auth().onAuthStateChanged((user) => {
+                            userCollection
+                                .doc(user.uid)
+                                .set({
+                                    name, 
+                                    post,
+                                })
+                        })
+                        growl({ text: 'Usuário criado', type: 'success', fadeAway: true, fadeAwayTimeout: 2000 });
+                        history.push('hall')
+                })
+                .catch((error) => {
+                    growl({ text: 'Não foi possível criar o cadastro', type: 'error', fadeAway: true, fadeAwayTimeout: 2000 });
+                })
+        }
     }
 
     return (

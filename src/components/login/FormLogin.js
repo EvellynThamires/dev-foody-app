@@ -1,24 +1,34 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import firebase from '../../plugins/firebase'
 import { Container, Row, Col, Form, Button} from 'react-bootstrap'
+import growl from 'growl-alert'
+import 'growl-alert/dist/growl-alert.css'
 
 import ForgotPassowrd from './ForgotPassword'
-
 
 export default () => {
     
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const history = useHistory()
+
     const login = (event) => {
-        event.preventDefault()
-        firebase.auth().signInWithEmailAndPassword(email, password) 
-            .then((response) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        if(!email || !password) {
+            event.preventDefault()
+            growl({ text: 'Preencha os campos', type: 'warning', fadeAway: true, fadeAwayTimeout: 2000 });
+        } else {
+            event.preventDefault()
+            firebase.auth().signInWithEmailAndPassword(email, password) 
+                .then(() => {
+                    growl({ text: 'Usuário logado', type: 'success', fadeAway: true, fadeAwayTimeout: 2000 });
+                    history.push('/hall')
+                })
+                .catch(() => {
+                    growl({ text: 'Usuário incorreto', type: 'error', fadeAway: true, fadeAwayTimeout: 2000 });
+                })
+        }  
     }
     
     return (

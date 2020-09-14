@@ -6,7 +6,6 @@ const BoxFormLogin = styled.div `
     margin-left: 33vw;
 `
 
-
 export default ({ children }) => (
     <BoxFormLogin> 
         { children }
