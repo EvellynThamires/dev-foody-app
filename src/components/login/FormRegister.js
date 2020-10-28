@@ -34,7 +34,7 @@ export default () => {
                         growl({ text: 'Usuário criado', type: 'success', fadeAway: true, fadeAwayTimeout: 2000 });
                         history.push('hall')
                 })
-                .catch((error) => {
+                .catch(() => {
                     growl({ text: 'Não foi possível criar o cadastro', type: 'error', fadeAway: true, fadeAwayTimeout: 2000 });
                 })
         }
